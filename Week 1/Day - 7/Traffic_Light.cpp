@@ -12,53 +12,50 @@ int main()
     while (t--)
     {
         int n;
+        cin >> n;
         char c;
-        cin >> n >> c;
+        cin >> c;
+        
         string s;
-        cin >> s;
-
+        cin>>s;
         if (c == 'g')
         {
             cout << "0\n";
             continue;
         }
-        int time = 0;
-        int rt = 0;
+        int mxg = -1;
+        vector<int> gidx;
+        vector<int> cidx;
         for (int i = 0; i < n; i++)
         {
-            if (s[n - i - 1] == 'g')
-                break;
-            if (s[n - i - 1] == c)
+            if (s[i] == 'g')
             {
-                rt = i + 1;
+                gidx.push_back(i+1);
+                mxg = max(mxg,i+1);
+            }
+            if(s[i] == c)
+            {
+                cidx.push_back(i+1);
             }
         }
-        if (rt == 0)
+        int mxtime = 0;
+        for(int i=0;i<cidx.size();i++)
         {
-            bool mark = false;
-            for (int i = 0; i < n; i++)
+            for(int j=0;j<gidx.size();j++)
             {
-                if (mark && s[i] == 'g')
-                    break;
-                if (mark)
-                    time++;
-                else if (s[i] == c)
+                if(gidx[j] > cidx[i])
                 {
-                    mark = true;
-                    time++;
+                    mxtime = max(mxtime,(gidx[j]-cidx[i]));
+                    break;
+                }
+                else if(cidx[i] > mxg)
+                {
+                    // cout << (n - cidx[i]) + gidx[0]<<"1\n";
+                    mxtime = max(mxtime, ((n - cidx[i]) + gidx[0]));
                 }
             }
         }
-        else
-        {
-            for (char c : s)
-            {
-                if (c == 'g')
-                    break;
-                time++;
-            }
-        }
-        cout << (time + rt) << '\n';
+        cout<<mxtime<<"\n";
     }
     return 0;
 }
