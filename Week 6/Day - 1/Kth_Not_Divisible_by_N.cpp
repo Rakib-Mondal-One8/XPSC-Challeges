@@ -17,8 +17,25 @@ int main()
     {
         int n, k;
         cin >> n >> k;
-        int val = (k - 1) / (n - 1);
-        cout << k + val << nl;
+
+        auto ok = [&](int mid)
+        {
+            return (mid - (mid) / n) >= k;
+        };
+        ll l = 1, r = 2e9;
+        ll ans = 0;
+        while (l <= r)
+        {
+            ll mid = l + (r - l) / 2;
+            if (ok(mid))
+            {
+                ans = mid;
+                r = mid - 1;
+            }
+            else
+                l = mid + 1;
+        }
+        cout << ans << nl;
     }
     return 0;
 }
