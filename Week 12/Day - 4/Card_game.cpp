@@ -84,49 +84,31 @@ void solve()
 {
 	int n;
 	cin >> n;
-	map<int, bool>track;
-	vector<vector<int>> st(51);
-	vector<int>cnt(51, 0);
-	vector<int> val[51];
-	int tot = 0;
-	loop(i, 1, n)
-	{
+	pbds<pi>s;
+	loop(i, 1, n) {
 		int x;
 		cin >> x;
-		loop(j, 1, x) {
-			int v;
-			cin >> v;
-			cnt[v]++;
-			if (track.find(v) == track.end())
-			{
-				track[v] = true;
-				tot++;
-			}
-			val[v].push_back(i);
-			st[i].push_back(v);
-		}
-
+		s.insert({i, x});
 	}
-	int ans = 0;
-	vector<int>track2(51, 0);
-	loop(i, 1, 50) {
-		if (cnt[i] == 0)
-			continue;
-		track2.assign(51, 0);
-		for (auto idx : val[i]) {
-			for (auto s : st[idx]) {
-				track2[s]++;
+	int idx = n;
+	ll ans = 0;
+	while (idx >= 1) {
+		if (idx % 2) {
+			auto v = s.find_by_order(idx - 1);
+			while (v->second > 0) {
+				ans += v->second;
+				auto to_del = s.find({v->first, v->second});
+				s.erase(to_del);
+				if (s.size() >= idx)
+					v = s.find_by_order(idx - 1);
+				else
+				{
+					break;
+				}
 			}
 		}
-		int tmp = tot;
-		loop(j, 1, 51) {
-			if ((cnt[j] - track2[j]) == 0 && cnt[j] > 0)
-				tmp--;
-		}
-		if (tmp != tot)
-			ans = max(ans, tmp);
+		idx--;
 	}
-	cout << ans << nl;
 
 }
 int main()
