@@ -84,38 +84,43 @@ void solve()
 {
 	int n;
 	cin >> n;
-	pbds<pll>s;
-	ll tot = 0;
+	map<int, int>mp;
 	loop(i, 1, n) {
-		ll x;
+		int x;
 		cin >> x;
-		s.insert({i, x});
-		if (x > 0) tot += x;
+		mp[x]++;
 	}
-	ll idx = 1;
-	ll ans = 0;
-	tot -= ans;
-	ll mx = LLONG_MIN;
-	for (auto v : s) {
-		if (v.second < 0 && (idx % 2 == 1)) {
-
-			mx = max(mx, v.second + tot);
-		}
-		else if (v.second < 0 && (idx % 2 == 0)) {
-			mx = max(mx, tot);
-		}
-		else if (v.second > 0 && (idx % 2 == 1)) {
-			mx = max(mx, tot);
-		}
-		else {
-			mx = max(mx, tot - v.second);
-		}
-		if (v.second > 0)
-			tot -= v.second;
-		idx++;
+	multiset<int>ml;
+	for (auto v : mp) {
+		ml.insert(v.second);
 	}
-	(mx > 0) ? cout << ans + mx << nl : cout << ans << nl;
+	map<int, int>mp2;
+	for (auto v : ml) {
+		mp2[v]++;
+	}
+	debug(ml);
+	while ((ml.size() != 0) && (ml.size() != 1)) {
+		int v1 = *ml.rbegin();
+		ml.erase(ml.find(v1));
+		int v2 = *ml.rbegin();
+		ml.erase(ml.find(v2));
+		v2--;
+		v1--;
+		if (v1) {
+			debug(v1);
+			ml.insert(v1);
+		}
+		if (v2) {
+			debug(v2);
+			ml.insert(v2);
+		}
+		debug(ml);
 
+	}
+	if (ml.empty())
+		cout << 0 << nl;
+	else
+		cout << *ml.begin() << nl;
 }
 int main()
 {

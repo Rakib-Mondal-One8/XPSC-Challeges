@@ -84,38 +84,39 @@ void solve()
 {
 	int n;
 	cin >> n;
-	pbds<pll>s;
-	ll tot = 0;
+	unordered_map<int, int>mp;
+	unordered_map<int, bool>track;
 	loop(i, 1, n) {
-		ll x;
+		int x;
 		cin >> x;
-		s.insert({i, x});
-		if (x > 0) tot += x;
+		mp[i] = x;
 	}
-	ll idx = 1;
-	ll ans = 0;
-	tot -= ans;
-	ll mx = LLONG_MIN;
-	for (auto v : s) {
-		if (v.second < 0 && (idx % 2 == 1)) {
-
-			mx = max(mx, v.second + tot);
+	vector<pi>ans;
+	int road = 0;
+	loop(i, 1, n) {
+		int gang = mp[i];
+		loop(j, 1, n) {
+			if (i != j && !track[j]) {
+				if (mp[j] != gang) {
+					ans.push_back({i, j});
+					track[j] = true;
+				}
+			}
 		}
-		else if (v.second < 0 && (idx % 2 == 0)) {
-			mx = max(mx, tot);
-		}
-		else if (v.second > 0 && (idx % 2 == 1)) {
-			mx = max(mx, tot);
-		}
-		else {
-			mx = max(mx, tot - v.second);
-		}
-		if (v.second > 0)
-			tot -= v.second;
-		idx++;
 	}
-	(mx > 0) ? cout << ans + mx << nl : cout << ans << nl;
-
+	if (ans.size() < n - 1) {
+		No;
+		return;
+	}
+	// debug(track);
+	track.clear();
+	Yes;
+	for (auto v : ans) {
+		if (!track[v.first] || !track[v.second])
+			cout << v.first << " " << v.second << nl;
+		track[v.first] = true;
+		track[v.second] = true;
+	}
 }
 int main()
 {
