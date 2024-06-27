@@ -82,29 +82,25 @@ int nXOR(int n) {
 /*--------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	int n;
-	cin >> n;
-	vector<int>a(n);
-	loop(i, 0, n - 1) cin >> a[i];
-	loop(i, 0, n - 2) {
-		if (a[i] == 1) {
-			a[i] += 1;
-		}
+	ll h, n;
+	cin >> h >> n;
+	vector<ll>a(n), c(n);
+	set<pll>s;
+	loop(i, 0, n - 1)cin >> a[i];
+	loop(i, 0, n - 1) {
+		cin >> c[i];
+		s.insert({1, i});
 	}
-	loop(i, 0, n - 2) {
-		if ((a[i + 1] % a[i]) == 0) {
-			if (a[i + 1] < a[i]) a[i] += 1;
-			else a[i + 1] += 1;
-
-		}
+	ll ans = 1;
+	while (h > 0) {
+		auto v = *s.begin();
+		s.erase(s.find(v));
+		ans = v.first;
+		h -= a[v.second];
+		s.insert({v.first + c[v.second], v.second});
 	}
-	debug(a);
-	for (auto v : a)
-		cout << v << " ";
-	cout << nl;
+	cout << ans << nl;
 }
-
-
 int main()
 {
 	init_code();

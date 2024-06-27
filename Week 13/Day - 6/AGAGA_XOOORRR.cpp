@@ -84,27 +84,36 @@ void solve()
 {
 	int n;
 	cin >> n;
-	vector<int>a(n);
-	loop(i, 0, n - 1) cin >> a[i];
-	loop(i, 0, n - 2) {
-		if (a[i] == 1) {
-			a[i] += 1;
+	vector<ll>a(n);
+	ll XOR = 0;
+	loop(i, 0, n - 1) {
+		cin >> a[i];
+		XOR ^= a[i];
+	}
+	if (XOR == 0) {
+		Yes;
+		return;
+	}
+	vector<ll>pref(n), suff(n);
+	pref[0] = a[0];
+	suff[n - 1] = a[n - 1];
+	loop(i, 1, n - 1) pref[i] = pref[i - 1] ^ a[i];
+	for (ll i = n - 2; i >= 0; i--) suff[i] = suff[i + 1] ^ a[i];
+	bool ok = false;
+	loop(i, 1, n - 2) {
+		loop(j, i, n - 2) {
+			if (pref[i - 1] == suff[j + 1]) {
+				if ((pref[j]^pref[i - 1]) == suff[j + 1])
+				{
+					ok = true;
+					break;
+				}
+			}
 		}
 	}
-	loop(i, 0, n - 2) {
-		if ((a[i + 1] % a[i]) == 0) {
-			if (a[i + 1] < a[i]) a[i] += 1;
-			else a[i + 1] += 1;
+	(ok == true) ? Yes : No;
 
-		}
-	}
-	debug(a);
-	for (auto v : a)
-		cout << v << " ";
-	cout << nl;
 }
-
-
 int main()
 {
 	init_code();
