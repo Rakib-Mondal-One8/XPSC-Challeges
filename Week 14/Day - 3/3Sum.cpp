@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> https://codeforces.com/problemset/problem/1989/D*/
+/*Problem Link -> https://codeforces.com/problemset/problem/1692/F*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -58,75 +58,60 @@ ll lcm(ll a, ll b) {return (a / __gcd(a, b)) * b;}
 int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 2)return n + 1; return 0;}
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-const int N = 1e6 + 9;
-int n, m;
-int a[N];
-int b[N];
-int c[N];
-vector<pi>v;
-map<ll, ll>mp;
-ll dp(ll cur) {
-	if (mp.count(cur)) return mp[cur];
-	int l = 0, r = v.size() - 1;
-	int idx = -1;
-	while (l <= r) {
-		int mid = l + (r - l) / 2;
-		if (v[mid].second <= cur) {
-			idx = mid;
-			r = mid - 1;
+vector<vector<int>>v;
+void prevCal() {
+	loop(i, 0, 9) {
+		loop(j, 0, 9) {
+			loop(k, 0, 9) {
+				int val = i + j + k;
+				if (val % 10 == 3) {
+					vector<int>tmp;
+					tmp.push_back(i);
+					tmp.push_back(j);
+					tmp.push_back(k);
+					v.push_back(tmp);
+				}
+			}
 		}
-		else
-			l = mid + 1;
 	}
-	if (idx == -1)
-		return mp[cur] = 0;
-	ll dec = v[idx].first;
-	ll inv = v[idx].second;
-	ll get = (cur - inv) / dec + 1;
-	ll lft = cur - get * dec;
-	ll res = get * 2 + dp(lft);
-	return mp[cur] = res;
 }
 void solve()
 {
-	cin >> n >> m;
-
-	for (int i = 0; i < n; i++) {
-		cin >> a[i];
+	int n;
+	cin >> n;
+	map<int, int>mp;
+	loop(i, 0, n - 1) {
+		int x;
+		cin >> x;
+		mp[x % 10]++;
 	}
-	for (int i = 0; i < n; i++) {
-		cin >> b[i];
-		v.push_back({a[i] - b[i], a[i]});
-	}
-	for (int i = 0; i < m; i++) {
-		cin >> c[i];
-	}
-	sort(v.begin(), v.end());
-	debug(v);
-	vector<pi>tmp;
-	for (int i = 0; i < n; i++) {
-		if (tmp.empty()) {
-			tmp.push_back(v[i]);
-			continue;
+	bool ok = false;
+	for (auto x : v) {
+		bool y = true;
+		map<int, int>tmp = mp;
+		for (auto val : x) {
+			if (tmp[val]) {
+				tmp[val]--;
+			}
+			else {
+				y = false;
+				break;
+			}
 		}
-		if (tmp.back().second > v[i].second) {
-			tmp.push_back(v[i]);
+		if (y) {
+			ok = true;
+			break;
 		}
 	}
-	v = tmp;
-	debug(v);
-	ll ans = 0;
-	for (int i = 0; i < m; i++) {
-		ans += dp(c[i]);
-	}
-	cout << ans << nl;
+	(ok) ? Yes : No;
 }
 int main()
 {
 	init_code();
 	fastio();
+	prevCal();
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{
