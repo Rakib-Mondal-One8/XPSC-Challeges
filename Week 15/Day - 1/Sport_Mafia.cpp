@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> https://codeforces.com/problemset/problem/1857/D*/
+/*Problem Link -> https://codeforces.com/problemset/problem/1195/B*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -58,30 +58,25 @@ int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 void solve()
 {
-	int n;
-	cin >> n;
-	vector<int>a(n), b(n);
-	loop(i, 0, n - 1)cin >> a[i];
-	loop(i, 0, n - 1)cin >> b[i];
-	map<int, set<int>>track;
-	int mx = INT_MIN;
-	loop(i, 0, n - 1) {
-		mx = max(mx, a[i] - b[i]);
-		int key = (a[i] - b[i]);
-		track[key].insert(i + 1);
+	int n, k;
+	cin >> n >> k;
+	ll ans = -1;
+	loop(i, 1, n) {
+		ll sum = (i * (i + 1)) / 2;
+		ll turn = n - i;
+		if ((sum - turn) == k) {
+			ans = turn;
+			break;
+		}
 	}
-	cout << track[mx].size() << nl;
-	for (auto e : track[mx]) {
-		cout << e << " ";
-	}
-	cout << nl;
+	cout << ans << nl;
 }
 int main()
 {
 	init_code();
 	fastio();
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{

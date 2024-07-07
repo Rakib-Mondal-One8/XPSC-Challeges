@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> https://codeforces.com/problemset/problem/1857/D*/
+/*Problem Link -> https://codeforces.com/problemset/problem/1722/G*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -60,21 +60,23 @@ void solve()
 {
 	int n;
 	cin >> n;
-	vector<int>a(n), b(n);
-	loop(i, 0, n - 1)cin >> a[i];
-	loop(i, 0, n - 1)cin >> b[i];
-	map<int, set<int>>track;
-	int mx = INT_MIN;
-	loop(i, 0, n - 1) {
-		mx = max(mx, a[i] - b[i]);
-		int key = (a[i] - b[i]);
-		track[key].insert(i + 1);
+	ll op1 = nXOR(n - 2);
+	ll op2 = nXOR(n - 3);
+	ll msb = ((ll)1 << 31) - 1;
+	if (op1 == 0) {
+		for (ll i = 0; i < n - 2; i++) {
+			cout << i << " ";
+		}
+		op2 ^= msb;
+		cout << msb << " " << op2 << nl;
 	}
-	cout << track[mx].size() << nl;
-	for (auto e : track[mx]) {
-		cout << e << " ";
+	else {
+		for (ll i = 1; i < n - 1; i++) {
+			cout << i << " ";
+		}
+		op1 ^= msb;
+		cout << msb << " " << op1 << nl;
 	}
-	cout << nl;
 }
 int main()
 {

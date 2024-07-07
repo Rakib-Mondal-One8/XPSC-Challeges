@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-/*Problem Link -> https://codeforces.com/problemset/problem/1857/D*/
+/*Problem Link -> https://codeforces.com/problemset/problem/1111/A*/
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
@@ -56,32 +56,35 @@ ll lcm(ll a, ll b) {return (a / __gcd(a, b)) * b;}
 int nXOR(int n) {if (n % 4 == 0)return n; if (n % 4 == 1)return 1; if (n % 4 == 2)return n + 1; return 0;}
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+bool isVowel(char c) {
+	if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') return true;
+	return false;
+}
 void solve()
 {
-	int n;
-	cin >> n;
-	vector<int>a(n), b(n);
-	loop(i, 0, n - 1)cin >> a[i];
-	loop(i, 0, n - 1)cin >> b[i];
-	map<int, set<int>>track;
-	int mx = INT_MIN;
-	loop(i, 0, n - 1) {
-		mx = max(mx, a[i] - b[i]);
-		int key = (a[i] - b[i]);
-		track[key].insert(i + 1);
+	string s, t;
+	cin >> s >> t;
+	if (s.size() != t.size()) {
+		No;
+		return;
 	}
-	cout << track[mx].size() << nl;
-	for (auto e : track[mx]) {
-		cout << e << " ";
+	loop(i, 0, s.size() - 1) {
+		if (s[i] != t[i]) {
+			bool c1 = isVowel(s[i]);
+			bool c2 = isVowel(t[i]);
+			if ((c1 && c2) || (!c1 && !c2)) continue;
+			No;
+			return;
+		}
 	}
-	cout << nl;
+	Yes;
 }
 int main()
 {
 	init_code();
 	fastio();
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	auto start1 = high_resolution_clock::now();
 	while (t--)
 	{
